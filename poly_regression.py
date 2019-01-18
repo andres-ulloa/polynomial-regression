@@ -7,65 +7,49 @@ import math
 
 
 def sample_senoidal(arg):
-    return math.sin(2 * math.pi * arg) + random.uniform(- 0.1 , 0.1) 
-
-
-def generate_training_example():
-    x_coord = random.uniform(0 ,1) 
-    y_coord = sample_senoidal(x)
-    return  np.array([x_coord , y_coord])
+    return math.sin(2 * math.pi * arg) + random.uniform(-0.3 , 0.3) 
 
 
 def generate_data(num_training_examples):
-    dataset = np.zeros((100), np.float)
+    dataset = list()
+    x_axis =  np.zeros((100), np.float)
+    y_axis =  np.zeros((100), np.float)
     for i in range(0, num_training_examples):
-        training_example = generate_training_example()
-        dataset[i] = training_example
-
-    save_training_examples(dataset)
+        x_coord_value = (i - 0.01)/(0.99 - 0.01)
+        x_axis[i] = x_coord_value
+        y_axis[i] = sample_senoidal(x_coord_value)
+    dataset.append(x_axis)
+    dataset.append(y_axis)
     return dataset
 
 
-def save_training_examples(dataset):
-   file = open('dataset.csv','w') 
-   for example in dataset:
-        file.write(example)
-   file.close()
-
-
-def plot_hypothesis():
-    pass
-
-
 def plot_dataset(dataset):
-   pass
+    plt.plot(dataset[0], dataset[1] ,linewidth = 2.0)
+    plt.show()
+        
 
-
-def compute_polynomial_linear_model(order, weights):
-    for i in range(0, order):
+def compute_hypothesis(order, weights, feature_vector):
+    dependent_variable = 0
+    for i in range(0, order * 3):
         pass
+    return dependent_variable
 
-def get_training_data(file_path):
-    data = np.loadtxt('data.csv')
-    return data
 
-def train_linear_model():
-    pass
+def run_gradient_descent(dataset, learning_rate = 0.0001, hypothesis_order = 3):
+    weights = np.random.uniform(low = -0.5, high = 0.5, size = hypothesis_order)
+    x_axis = dataset[0]
+    y_axis = dataset[1]
+    features = y_axis
+    for i in range(len(y_axis)):
+        for weight in weights:
+            x_coord = x_axis[i] 
+            weight = weight + learning_rate * (sample_senoidal(x_coord) - compute_hypothesis(hypothesis_order, weights, feature_vector))
 
-def compute_cost_function():
-    pass
-
-def compute_gradient():
-    pass
 
 def main():
-    new_data = input('¿Generate a new data set? (Y/N)')
-    data =  np.zeros((100), np.float)
-    if new_data == 'Y':
-        data = generate_data()
-    else:
-        data = get_training_data('data.csv')
-    
+    data = generate_data(100)
+    plot_dataset(data)
+    train_linear_model(data)
 
 if __name__ == "__main__":
     main()
