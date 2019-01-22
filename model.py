@@ -9,20 +9,22 @@ class model:
         self.order = order
         self.error_registry = error_registry
 
-    def sample(arg):
+    def sample_model(self, feature_vector):
 
         dependent_variable = 0
+        power_index = 0
+        feature_vector_index = 0
 
-        for i in range(0, len(weights)):
-        
-            if power_index > 1:
-                dependent_variable += weights[i] * pow(arg, power_index)
+        for i in range(0, len(self.weights)):
+
+            if i > 1:
+                power_index += 1
+                dependent_variable += self.weights[i] * pow(feature_vector[feature_vector_index], power_index)
             else:
-                dependent_variable += weights[i]
+                dependent_variable += self.weights[i]
 
-            if power_index == order:
-
+            if power_index == self.order:
                 feature_vector_index += 1
-                power_index = 1    
-
+                power_index = 0  
+                
         return dependent_variable
