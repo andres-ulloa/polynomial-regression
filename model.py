@@ -17,13 +17,13 @@ class model:
 
         for i in range(0, len(self.weights)):
 
-            if i > 1:
+            if i > 0:
                 power_index += 1
                 dependent_variable += self.weights[i] * pow(feature_vector[feature_vector_index], power_index)
             else:
                 dependent_variable += self.weights[i]
 
-            if power_index == self.order:
+            if power_index == self.order and i + 1 < len(self.weights):
                 feature_vector_index += 1
                 power_index = 0  
                 
